@@ -87,10 +87,7 @@ func main() {
 				fmt.Println("Product with id = %1 deleted successfully", id)
 				continue
 			}
-			if !ok {
-				fmt.Println("Product with id = %1 not deleted", id)
-				continue
-			}
+			fmt.Println("Product with id = %1 not deleted", id)
 		case "Read products in warehouse":
 			fmt.Println("Please enter the warehouse ID:")
 			var id int
@@ -158,10 +155,7 @@ func main() {
 				fmt.Println("Product with id = %1 deleted successfully", id)
 				continue
 			}
-			if !ok {
-				fmt.Println("Product with id = %1 not deleted", id)
-				continue
-			}
+			fmt.Println("Product with id = %1 not deleted", id)
 		case "exit":
 			break
 		default:
