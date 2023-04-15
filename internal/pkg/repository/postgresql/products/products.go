@@ -2,8 +2,8 @@ package products
 
 import (
 	"context"
-	"homework-5/internal/pkg/db"
-	"homework-5/internal/pkg/repository"
+	"homework-6/internal/pkg/db"
+	"homework-6/internal/pkg/repository"
 )
 
 type ProductsRepo struct {

@@ -12,7 +12,7 @@ migration-create:
 test-migration-up:
 	goose -dir "$(MIGRATION_FOLDER)" postgres "$(POSTGRES_SETUP_TEST)" up
 
-.PHONY: test-migration-down
+.PHONY:
 test-migration-down:
 	goose -dir "$(MIGRATION_FOLDER)" postgres "$(POSTGRES_SETUP_TEST)" down
 
