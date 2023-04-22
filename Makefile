@@ -26,3 +26,10 @@ compose-up:
 compose-rm:
 	docker-compose down
 
+
+test:
+	go test -coverprofile=./internal/pkg/server/coverage.out ./internal/pkg/server
+	go tool cover -html=./internal/pkg/server/coverage.out -o ./internal/pkg/server/coverage.html
+
+
+

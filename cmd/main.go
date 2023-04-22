@@ -1,14 +1,12 @@
 package main
 
 import (
-	"bufio"
 	"context"
 	"fmt"
-	"homework-6/internal/console"
-	"homework-6/internal/pkg/db"
-	"homework-6/internal/pkg/repository/postgresql/products"
-	"homework-6/internal/pkg/repository/postgresql/warehouses"
-	"os"
+	"homework-5/internal/pkg/db"
+	"homework-5/internal/pkg/repository/postgresql/products"
+	"homework-5/internal/pkg/repository/postgresql/warehouses"
+	"homework-5/internal/pkg/server"
 )
 
 func main() {
@@ -23,22 +21,9 @@ func main() {
 	productRepo := products.NewProducts(database)
 	warehouseRepo := warehouses.NewWarehouses(database)
 
-	console := console.NewServer(productRepo, warehouseRepo)
-
 	defer database.GetPool(ctx).Close()
 
-	fmt.Println("Type a command (type 'exit' to quit):")
-	reader := bufio.NewReader(os.Stdin)
-	for {
-		fmt.Print("> ")
-		input, err := reader.ReadString('\n')
-		if err != nil {
-			continue
-		}
-		err = console.Action(ctx, input)
-		if err != nil {
-			fmt.Println(err)
-			continue
-		}
-	}
+	consoleServer := server.New(productRepo, warehouseRepo)
+
+	consoleServer.RunServer(ctx)
 }
