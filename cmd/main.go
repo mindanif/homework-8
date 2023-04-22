@@ -9,10 +9,19 @@ import (
 	"homework-5/internal/pkg/server"
 )
 
+const (
+	host     = "localhost"
+	port     = 5432
+	user     = "test"
+	password = "test"
+	dbname   = "test"
+)
+
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	database, err := db.NewDB(ctx)
+	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
+	database, err := db.NewDB(ctx, dsn)
 	if err != nil {
 		fmt.Println(err)
 		return
