@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"fmt"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
@@ -22,7 +23,6 @@ func NewDB(ctx context.Context, dsn string) (*Database, error) {
 	return newDatabase(pool), nil
 }
 
-//
-//func generateDsn() string {
-//	return fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
-//}
+func generateDsn() string {
+	return fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
+}

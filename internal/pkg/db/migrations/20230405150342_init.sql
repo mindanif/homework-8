@@ -3,7 +3,7 @@
 CREATE TABLE warehouses (
                        id SERIAL PRIMARY KEY NOT NULL,
                        name text NOT NULL,
-                       city text,
+                       city text NOT NULL,
                        square INT,
                        created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL
 );
@@ -12,7 +12,7 @@ CREATE TABLE products (
                      id SERIAL PRIMARY KEY NOT NULL,
                      name text NOT NULL,
                      description TEXT,
-                     price INT,
+                     price INT NOT NULL,
                      warehouse_id INT,
                      created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL
 );

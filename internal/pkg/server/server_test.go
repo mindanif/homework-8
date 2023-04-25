@@ -147,10 +147,10 @@ func TestServer_getProducts(t *testing.T) {
 		defer s.tearDown()
 
 		t.Parallel()
-		tt := []struct {
-			name    string
-			request *url.URL
-			isOk    bool
+		testCases := []struct {
+			name        string
+			giveRequest *url.URL
+			wantError   bool
 		}{
 			{
 				"without id",
@@ -173,12 +173,12 @@ func TestServer_getProducts(t *testing.T) {
 				true,
 			},
 		}
-		for _, tc := range tt {
+		for _, tc := range testCases {
 			tc := tc
 			t.Run(tc.name, func(t *testing.T) {
 				t.Parallel()
-				id, err := getID(tc.request)
-				if !tc.isOk {
+				id, err := getIDFromParams(tc.giveRequest)
+				if !tc.wantError {
 					assert.EqualError(t, err, "can't get id")
 				} else {
 					assert.Equal(t, 0, id)

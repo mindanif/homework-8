@@ -78,14 +78,14 @@ func (t *Server) createProduct(ctx context.Context, req *http.Request) int {
 	id, err := t.productRepo.Create(ctx, &product)
 	if err != nil {
 		log.Println(err)
-		return http.StatusNotFound
+		return http.StatusInternalServerError
 	}
 	log.Println("New product with id:", id)
 	return http.StatusOK
 }
 
 func (t *Server) getProducts(ctx context.Context, req *http.Request) int {
-	warehouseId, err := getID(req.URL)
+	warehouseId, err := getIDFromParams(req.URL)
 	if err != nil {
 		log.Println("invalid WarehouseID")
 		return http.StatusBadRequest
@@ -114,7 +114,7 @@ func (t *Server) updateProduct(ctx context.Context, req *http.Request) int {
 	_, err = t.productRepo.Update(ctx, &product)
 	if err != nil {
 		log.Println(err)
-		return http.StatusNotFound
+		return http.StatusInternalServerError
 	}
 	return http.StatusOK
 }
@@ -129,7 +129,7 @@ func (t *Server) deleteProduct(ctx context.Context, req *http.Request) int {
 	ok, err := t.productRepo.Delete(ctx, productId)
 	if err != nil {
 		log.Println(err)
-		return http.StatusNotFound
+		return http.StatusInternalServerError
 	}
 	if ok {
 		log.Println("Product with id = %1 deleted successfully", productId)
@@ -149,7 +149,7 @@ func (t *Server) createWarehouse(ctx context.Context, req *http.Request) int {
 	id, err := t.warehouseRepo.Add(ctx, &warehouse)
 	if err != nil {
 		log.Println(err)
-		return http.StatusNotFound
+		return http.StatusInternalServerError
 	}
 	log.Printf("Warehouse.id: %d", id)
 	return http.StatusOK
@@ -159,7 +159,7 @@ func (t *Server) getWarehouse(ctx context.Context, _ *http.Request) int {
 	warehouses, err := t.warehouseRepo.List(ctx)
 	if err != nil {
 		log.Println(err)
-		return http.StatusNotFound
+		return http.StatusInternalServerError
 	}
 	jsonResult, err := json.Marshal(warehouses)
 	if err != nil {
@@ -179,7 +179,7 @@ func (t *Server) updateWarehouse(ctx context.Context, req *http.Request) int {
 	updated, err := t.warehouseRepo.Update(ctx, &warehouse)
 	if err != nil {
 		log.Println(err)
-		return http.StatusNotFound
+		return http.StatusInternalServerError
 	}
 	log.Println(updated)
 	return http.StatusOK
@@ -195,7 +195,7 @@ func (t *Server) deleteWarehouse(ctx context.Context, req *http.Request) int {
 	ok, err := t.productRepo.Delete(ctx, productId)
 	if err != nil {
 		log.Println(err)
-		return http.StatusNotFound
+		return http.StatusInternalServerError
 	}
 	if ok {
 		log.Println("Warehouse with id = %1 deleted successfully", productId)
@@ -211,7 +211,7 @@ func (t *Server) unsupported(_ http.ResponseWriter, req *http.Request) int {
 	return http.StatusBadRequest
 }
 
-func getID(reqUrl *url.URL) (int, error) {
+func getIDFromParams(reqUrl *url.URL) (int, error) {
 	idStr := reqUrl.Query().Get(QueryParamId)
 	if len(idStr) == 0 {
 		return 0, errors.New("can't get id")
@@ -219,7 +219,7 @@ func getID(reqUrl *url.URL) (int, error) {
 
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		return 0, fmt.Errorf("can't parse id: %s", err)
+		return 0, fmt.Errorf("can't parse id: %v", err)
 	}
 
 	return id, nil
