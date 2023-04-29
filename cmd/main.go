@@ -68,7 +68,7 @@ func main() {
 	pb.RegisterProductServiceServer(server, productsServer)
 	pb.RegisterWarehouseServiceServer(server, warehousesServer)
 
-	listener, err := net.Listen("tcp", ":8080")
+	listener, err := net.Listen("tcp", ":50051")
 	if err != nil {
 		panic(err)
 	}
