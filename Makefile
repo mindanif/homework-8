@@ -31,5 +31,10 @@ test:
 	go test -coverprofile=./internal/pkg/server/coverage.out ./internal/pkg/server
 	go tool cover -html=./internal/pkg/server/coverage.out -o ./internal/pkg/server/coverage.html
 
-
+generate_proto:
+	protoc \
+		--proto_path=internal/proto/ \
+		--go_out=internal/pb/ \
+		--go-grpc_out=internal/pb/ \
+		internal/proto/*.proto
 

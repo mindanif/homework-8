@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package warehouse;
+option go_package = "./;pb";
+
+service WarehouseService {
+  rpc CreateWarehouse (CreateWarehouseRequest) returns (CreateWarehouseResponse) {}
+  rpc UpdateWarehouse (UpdateWarehouseRequest) returns (UpdateWarehouseResponse) {}
+  rpc DeleteWarehouse (DeleteWarehouseRequest) returns (DeleteWarehouseResponse) {}
+}
+
+message CreateWarehouseRequest {
+  string name = 1 ;
+  string city = 2;
+  int32 square = 3;
+}
+
+message CreateWarehouseResponse {
+  uint32 id = 1;
+}
+
+message UpdateWarehouseRequest{
+  uint32 id = 1;
+  string name = 2;
+  string city = 3;
+  int32 square = 4;
+}
+
+message UpdateWarehouseResponse{
+  bool ok = 2;
+}
+
+message DeleteWarehouseRequest {
+  uint32 id = 1;
+}
+
+message DeleteWarehouseResponse {
+  bool ok = 2;
+}
+
+
