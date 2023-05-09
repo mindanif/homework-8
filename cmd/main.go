@@ -35,13 +35,15 @@ const (
 )
 
 func main() {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 	tp, err := tracerProvider("http://localhost:14268/api/traces")
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer tp.Shutdown(ctx)
 	otel.SetTracerProvider(tp)
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+
 	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 	database, err := db.NewDB(ctx, dsn)
 	if err != nil {

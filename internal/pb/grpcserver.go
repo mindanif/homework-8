@@ -9,14 +9,14 @@ import (
 	"log"
 )
 
-type GrpcProductServer struct {
+type grpcProductServer struct {
 	productRepo repository.ProductsRepo
 }
 
-func NewGrpcProductServer(productRepo repository.ProductsRepo) *GrpcProductServer {
-	return &GrpcProductServer{productRepo: productRepo}
+func NewGrpcProductServer(productRepo repository.ProductsRepo) *grpcProductServer {
+	return &grpcProductServer{productRepo: productRepo}
 }
-func (p *GrpcProductServer) CreateProduct(ctx context.Context, req *CreateProductRequest) (*CreateProductResponse, error) {
+func (p *grpcProductServer) CreateProduct(ctx context.Context, req *CreateProductRequest) (*CreateProductResponse, error) {
 	tr := otel.Tracer("CreateProduct")
 	ctx, span := tr.Start(ctx, "received request")
 	span.SetAttributes(attribute.Key("params").String(req.String()))
@@ -43,7 +43,7 @@ func (p *GrpcProductServer) CreateProduct(ctx context.Context, req *CreateProduc
 
 	return &response, nil
 }
-func (p *GrpcProductServer) UpdateProduct(ctx context.Context, req *UpdateProductRequest) (*UpdateProductResponse, error) {
+func (p *grpcProductServer) UpdateProduct(ctx context.Context, req *UpdateProductRequest) (*UpdateProductResponse, error) {
 	tr := otel.Tracer("UpdateProduct")
 	ctx, span := tr.Start(ctx, "received request")
 	span.SetAttributes(attribute.Key("params").String(req.String()))
@@ -68,9 +68,9 @@ func (p *GrpcProductServer) UpdateProduct(ctx context.Context, req *UpdateProduc
 
 	return &response, nil
 }
-func (p *GrpcProductServer) DeleteProduct(ctx context.Context, req *DeleteProductRequest) (*DeleteProductResponse, error) {
-	tr := otel.Tracer("DeleteTodo")
-	ctx, span := tr.Start(ctx, "received request")
+func (p *grpcProductServer) DeleteProduct(ctx context.Context, req *DeleteProductRequest) (*DeleteProductResponse, error) {
+	tr := otel.Tracer("DeleteProduct")
+	ctx, span := tr.Start(ctx, "DeleteProduct request")
 	span.SetAttributes(attribute.Key("params").String(req.String()))
 	defer span.End()
 
@@ -88,21 +88,21 @@ func (p *GrpcProductServer) DeleteProduct(ctx context.Context, req *DeleteProduc
 
 	return &response, nil
 }
-func (p *GrpcProductServer) mustEmbedUnimplementedProductServiceServer() {
+func (p *grpcProductServer) mustEmbedUnimplementedProductServiceServer() {
 
 }
 
-type GrpcWarehouseServer struct {
+type grpcWarehouseServer struct {
 	warehouseRepo repository.WarehousesRepo
 }
 
-func NewGrpcWarehouseServer(warehousesRepo repository.WarehousesRepo) *GrpcWarehouseServer {
-	return &GrpcWarehouseServer{warehouseRepo: warehousesRepo}
+func NewGrpcWarehouseServer(warehousesRepo repository.WarehousesRepo) *grpcWarehouseServer {
+	return &grpcWarehouseServer{warehouseRepo: warehousesRepo}
 }
 
-func (w *GrpcWarehouseServer) CreateWarehouse(ctx context.Context, req *CreateWarehouseRequest) (*CreateWarehouseResponse, error) {
+func (w *grpcWarehouseServer) CreateWarehouse(ctx context.Context, req *CreateWarehouseRequest) (*CreateWarehouseResponse, error) {
 	tr := otel.Tracer("CreateWarehouse")
-	ctx, span := tr.Start(ctx, "received request")
+	ctx, span := tr.Start(ctx, "CreateWarehouse request")
 	span.SetAttributes(attribute.Key("params").String(req.String()))
 	defer span.End()
 
@@ -123,9 +123,9 @@ func (w *GrpcWarehouseServer) CreateWarehouse(ctx context.Context, req *CreateWa
 
 	return &response, nil
 }
-func (w *GrpcWarehouseServer) UpdateWarehouse(ctx context.Context, req *UpdateWarehouseRequest) (*UpdateWarehouseResponse, error) {
+func (w *grpcWarehouseServer) UpdateWarehouse(ctx context.Context, req *UpdateWarehouseRequest) (*UpdateWarehouseResponse, error) {
 	tr := otel.Tracer("UpdateWarehouse")
-	ctx, span := tr.Start(ctx, "received request")
+	ctx, span := tr.Start(ctx, "UpdateWarehouse request")
 	span.SetAttributes(attribute.Key("params").String(req.String()))
 	defer span.End()
 
@@ -147,9 +147,9 @@ func (w *GrpcWarehouseServer) UpdateWarehouse(ctx context.Context, req *UpdateWa
 
 	return &response, nil
 }
-func (w *GrpcWarehouseServer) DeleteWarehouse(ctx context.Context, req *DeleteWarehouseRequest) (*DeleteWarehouseResponse, error) {
+func (w *grpcWarehouseServer) DeleteWarehouse(ctx context.Context, req *DeleteWarehouseRequest) (*DeleteWarehouseResponse, error) {
 	tr := otel.Tracer("DeleteWarehouse")
-	ctx, span := tr.Start(ctx, "received request")
+	ctx, span := tr.Start(ctx, "DeleteWarehouse request")
 	span.SetAttributes(attribute.Key("params").String(req.String()))
 	defer span.End()
 
@@ -165,4 +165,4 @@ func (w *GrpcWarehouseServer) DeleteWarehouse(ctx context.Context, req *DeleteWa
 
 	return &response, nil
 }
-func (w *GrpcWarehouseServer) mustEmbedUnimplementedWarehouseServiceServer() {}
+func (w *grpcWarehouseServer) mustEmbedUnimplementedWarehouseServiceServer() {}
