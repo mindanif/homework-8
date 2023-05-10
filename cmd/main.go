@@ -16,6 +16,7 @@ import (
 	"homework-5/internal/pkg/repository/postgresql/products"
 	"homework-5/internal/pkg/repository/postgresql/warehouses"
 	httpServer "homework-5/internal/pkg/server"
+	"homework-5/internal/tracerutil"
 	"log"
 	"net"
 	"net/http"
@@ -43,6 +44,11 @@ func main() {
 	}
 	defer tp.Shutdown(ctx)
 	otel.SetTracerProvider(tp)
+
+	err = tracerutil.InitTracer("Product service")
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 	database, err := db.NewDB(ctx, dsn)

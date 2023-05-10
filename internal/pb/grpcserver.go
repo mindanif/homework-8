@@ -2,10 +2,10 @@ package pb
 
 import (
 	"context"
-	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	internal "homework-5/internal/model"
 	"homework-5/internal/pkg/repository"
+	"homework-5/internal/tracerutil"
 	"log"
 )
 
@@ -17,7 +17,7 @@ func NewGrpcProductServer(productRepo repository.ProductsRepo) *grpcProductServe
 	return &grpcProductServer{productRepo: productRepo}
 }
 func (p *grpcProductServer) CreateProduct(ctx context.Context, req *CreateProductRequest) (*CreateProductResponse, error) {
-	tr := otel.Tracer("CreateProduct")
+	tr := tracerutil.GetTracer()
 	ctx, span := tr.Start(ctx, "received request")
 	span.SetAttributes(attribute.Key("params").String(req.String()))
 	defer span.End()
@@ -44,7 +44,7 @@ func (p *grpcProductServer) CreateProduct(ctx context.Context, req *CreateProduc
 	return &response, nil
 }
 func (p *grpcProductServer) UpdateProduct(ctx context.Context, req *UpdateProductRequest) (*UpdateProductResponse, error) {
-	tr := otel.Tracer("UpdateProduct")
+	tr := tracerutil.GetTracer()
 	ctx, span := tr.Start(ctx, "received request")
 	span.SetAttributes(attribute.Key("params").String(req.String()))
 	defer span.End()
@@ -69,7 +69,7 @@ func (p *grpcProductServer) UpdateProduct(ctx context.Context, req *UpdateProduc
 	return &response, nil
 }
 func (p *grpcProductServer) DeleteProduct(ctx context.Context, req *DeleteProductRequest) (*DeleteProductResponse, error) {
-	tr := otel.Tracer("DeleteProduct")
+	tr := tracerutil.GetTracer()
 	ctx, span := tr.Start(ctx, "DeleteProduct request")
 	span.SetAttributes(attribute.Key("params").String(req.String()))
 	defer span.End()
@@ -101,7 +101,7 @@ func NewGrpcWarehouseServer(warehousesRepo repository.WarehousesRepo) *grpcWareh
 }
 
 func (w *grpcWarehouseServer) CreateWarehouse(ctx context.Context, req *CreateWarehouseRequest) (*CreateWarehouseResponse, error) {
-	tr := otel.Tracer("CreateWarehouse")
+	tr := tracerutil.GetTracer()
 	ctx, span := tr.Start(ctx, "CreateWarehouse request")
 	span.SetAttributes(attribute.Key("params").String(req.String()))
 	defer span.End()
@@ -124,7 +124,7 @@ func (w *grpcWarehouseServer) CreateWarehouse(ctx context.Context, req *CreateWa
 	return &response, nil
 }
 func (w *grpcWarehouseServer) UpdateWarehouse(ctx context.Context, req *UpdateWarehouseRequest) (*UpdateWarehouseResponse, error) {
-	tr := otel.Tracer("UpdateWarehouse")
+	tr := tracerutil.GetTracer()
 	ctx, span := tr.Start(ctx, "UpdateWarehouse request")
 	span.SetAttributes(attribute.Key("params").String(req.String()))
 	defer span.End()
@@ -148,7 +148,7 @@ func (w *grpcWarehouseServer) UpdateWarehouse(ctx context.Context, req *UpdateWa
 	return &response, nil
 }
 func (w *grpcWarehouseServer) DeleteWarehouse(ctx context.Context, req *DeleteWarehouseRequest) (*DeleteWarehouseResponse, error) {
-	tr := otel.Tracer("DeleteWarehouse")
+	tr := tracerutil.GetTracer()
 	ctx, span := tr.Start(ctx, "DeleteWarehouse request")
 	span.SetAttributes(attribute.Key("params").String(req.String()))
 	defer span.End()
